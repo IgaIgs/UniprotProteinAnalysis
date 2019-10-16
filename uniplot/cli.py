@@ -1,15 +1,15 @@
 import argparse
-import gzip
-from Bio import SeqIO
+
+from uniplot import parse
+
+LOC='uniprot_receptor.xml.gz'
 
 def dump(args):
-    handle = gzip.open('uniprot_receptor.xml.gz')
-    for record in SeqIO.parse(handle,'uniprot-xml'):
+    for record in parse.uniprot_seqrecords(LOC):
         print(record)
 
 def name(args):
-    handle = gzip.open('uniprot_receptor.xml.gz')
-    for record in SeqIO.parse(handle, 'uniprot-xml'):
+    for record in parse.uniprot_seqrecords(LOC):
         print(record.name)
 
 def cli():
@@ -22,11 +22,12 @@ def cli():
     subparsers = parser.add_subparsers(help='Sub Command Help')
 
     ## Add subparsers
-    subparsers.add_parser('dump').set_defaults(function=dump)
-    subparsers.add_parser('list').set_defaults(function=name)
+    subparsers.add_parser('dump').set_defaults(func=dump)
+    subparsers.add_parser('list').set_defaults(func=name)
 
     ## Parse the commend line
     args = parser.parse_args()
 
     ## Take the func argument, which points to our function and call it
-    args.function(args)
+    args.func(args)
+
