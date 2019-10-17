@@ -1,16 +1,30 @@
 import argparse
-
+from . import analysis
 from uniplot import parse
 
-LOC='uniprot_receptor.xml.gz'
+LOC="uniprot_receptor.xml.gz"
 
 def dump(args):
     for record in parse.uniprot_seqrecords(LOC):
         print(record)
 
-def name(args):
+## pass 2 parameters for name function to enable you to choose between printing the names for func(names) or calculating the average for func(average)
+def name(args,p=True):
+    ##create an empty list of record names to use for average
+    n = []
     for record in parse.uniprot_seqrecords(LOC):
-        print(record.name)
+        # to run name function and print record.names give the p variable a True value
+        if (p == True):
+            print(record.name)
+            ## also add each of the printed names to the n list created at the beginning of this function definition (to be used in calculating average)
+        n.append(record.name)
+# return the list of names when called in average(args)
+    return n
+
+def average(args):
+    print('Average Length is {}'.format(
+#print the result of the average_len function calculation using the n list created in 'name' function, without printing all the names (hence p = False)
+analysis.average_len(name(args, p = False))))
 
 def cli():
     ## create a new parser
@@ -24,6 +38,7 @@ def cli():
     ## Add subparsers
     subparsers.add_parser('dump').set_defaults(func=dump)
     subparsers.add_parser('list').set_defaults(func=name)
+    subparsers.add_parser('average').set_defaults(func=average)
 
     ## Parse the commend line
     args = parser.parse_args()
