@@ -1,5 +1,5 @@
 import argparse
-from . import analysis
+from uniplot import analysis
 from uniplot import parse, plot
 
 LOC="uniprot_receptor.xml.gz"
@@ -40,7 +40,7 @@ def cli():
     subparsers = parser.add_subparsers(help='Sub Command Help')
 
     ## Add subparsers
-    subparsers.add_parser('dump').set_defaults(func=dump)
+    subparsers.add_parser('dump').set_defaults(func=dump, help='dump help')
     subparsers.add_parser('list').set_defaults(func=name)
     subparsers.add_parser('average').set_defaults(func=average)
     subparsers.add_parser('plot_average_by_taxa').set_defaults(func=plot_average_by_taxa)
