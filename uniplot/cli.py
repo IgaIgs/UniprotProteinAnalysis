@@ -6,6 +6,11 @@ LOC = "uniprot_receptor.xml.gz"
 
 
 def dump(args):
+    """Print out the uncompressed file containing protein information.
+
+    :param args: A reference to the 'dump' sub-command defined in the subparsers below.
+    :return: Printed file.
+    """
     for record in parse.uniprot_seqrecords(LOC):
         print(record)
 
@@ -13,36 +18,51 @@ def dump(args):
 # pass 2 parameters for name function to enable you to choose between printing the names for func(names) or
 # calculating the average for func(average)
 def name(args, p=True):
-    # create an empty list of record names to use for average
+    """Print out the names of all the proteins in the file.
+
+    :param args: A reference to the 'name' sub-command defined in the subparsers below.
+    :param p: Should the names of proteins be printed?
+
+    :return: Names of proteins.
+    """
+    # create an empty list of record names to use for calculating average length
     n = []
     for record in parse.uniprot_seqrecords(LOC):
         # to run name function and print record.names give the p variable a True value
         if (p == True):
             print(record.name)
-            # also add each of the printed names to the n list created at the beginning of this function definition
-            # (to be used in calculating average)
+        # also add each of the printed names to the n list created at the beginning of this function definition
+        # (to be used in calculating average)
         n.append(record.name)
-    # return the list of names when called in average(args)
+    # return the n list to the average function
     return n
 
 
 def average(args):
+    """Print the average length of records in the file (protein names).
+
+    :param args: A reference to the 'average' sub-command defined in the subparsers below.
+    :return: Average length of names.
+    """
     print('Average Length is {}'.format(
-        # print the result of the average_len function calculation using the n list created in 'name' function,
-        # without printing all the names (hence p = False)
+        # print the result of the average_len function using the 'n' list created in 'name' function,
+        # but DO NOT print all the record names (hence p = False)
         analysis.average_len(name(args, p=False))))
 
 
 def plot_average_by_taxa(args):
+    """Display a bar graph with previously defined features.
+
+    :param args: A reference to the 'taxa_average' sub-command defined in the subparsers below.
+    :return: A bar graph with average protein sequence lengths organized by taxa.
+    """
     av = analysis.average_len_taxa(parse.uniprot_seqrecords(LOC))
     plot.plot_bar_show(av)
 
 
 def cli():
-    # create a new parser
-    # a parser in programming: a program which breaks down the input it receives into parts,
-    # which can be then managed by other programs
-    # parse - dokonywać analizy (gramatycznej, składni), rozbijać na części
+    """Create a new parser and a list of subparsers."""
+
     parser = argparse.ArgumentParser(prog='uniplot', description='Access some information about the proteins.')
 
     subparsers = parser.add_subparsers(help='Sub Command Help')
@@ -53,7 +73,7 @@ def cli():
         set_defaults(func=name)
     subparsers.add_parser('average', help='This shows the average sequence length of the proteins in the file').\
         set_defaults(func=average)
-    subparsers.add_parser('taxa_average', help='Display a bar chart of average protein sequence lengths by taxa').\
+    subparsers.add_parser('taxa_average', help='Display a bar graph of average protein sequence lengths by taxa').\
         set_defaults(func=plot_average_by_taxa)
 
     # Parse the command line

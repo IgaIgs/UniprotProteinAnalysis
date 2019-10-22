@@ -2,18 +2,27 @@ import statistics
 
 
 def average_len(records):
-    #create an empty list 'lengths' to which the lenghts of individual record names will be added
-    #this will enable the calculation of the average length
+    """Calculate the average length of proteins' sequences (records).
+
+    :param records: a list of proteins in a file.
+
+    :return: The average length of all lengths in the 'lengths' list (average length of records.)
+    """
+    # Create an empty list 'lengths' to which the lengths of individual records will be added.
+    # This will enable the calculation of the average length.
     lengths = []
     for name in records:
-        #add each of the records' length to the lenghts list
+        # Add each of the records' length to the lengths list
         lengths.append(len(name))
-#calculate the average lenght of all lengths in lenght list (so the average lenght of the records)
     return statistics.mean(lengths)
 
 
 def average_len_taxa(records):
-    """Returns the average length for the top level taxa"""
+    """Calculate the average length of proteins' sequences for the top level taxa.
+
+    :param records: a list of proteins in a file.
+    :return: an average length of protein sequences by taxa.
+    """
     record_by_taxa = {}
     for r in records:
         taxa = r.annotations["taxonomy"][0]
