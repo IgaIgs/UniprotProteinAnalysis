@@ -15,39 +15,25 @@ def dump(args):
         print(record)
 
 
-# pass 2 parameters for name function to enable you to choose between printing the names for func(names) or
-# calculating the average for func(average)
-def name(args, p=True):
+def name(args):
     """Print out the names of all the proteins in the file.
 
     :param args: A reference to the 'name' sub-command defined in the subparsers below.
-    :param p: Should the names of proteins be printed?
-
     :return: Names of proteins.
     """
-    # create an empty list of record names to use for calculating average length
-    n = []
     for record in parse.uniprot_seqrecords(LOC):
-        # to run name function and print record.names give the p variable a True value
-        if (p == True):
-            print(record.name)
-        # also add each of the printed names to the n list created at the beginning of this function definition
-        # (to be used in calculating average)
-        n.append(record.name)
-    # return the n list to the average function
-    return n
+        print(record.name)
 
 
 def average(args):
-    """Print the average length of records in the file (protein names).
+    """Print the average length of protein sequences in the file.
 
     :param args: A reference to the 'average' sub-command defined in the subparsers below.
-    :return: Average length of names.
+    :return: Average length of protein sequences.
     """
-    print('Average Length is {}'.format(
-        # print the result of the average_len function using the 'n' list created in 'name' function,
-        # but DO NOT print all the record names (hence p = False)
-        analysis.average_len(name(args, p=False))))
+    print("Average length is {}".format(
+        # print the results of the average_len function in analysis.py
+        analysis.average_len(parse.uniprot_seqrecords(LOC))))
 
 
 def plot_average_by_taxa(args):
@@ -75,7 +61,7 @@ def cli():
         set_defaults(func=name)
     subparsers.add_parser('average', help='This shows the average sequence length of the proteins in the file'). \
         set_defaults(func=average)
-    subparsers.add_parser('taxa_average_graph', help='Display a bar graph of average protein sequence lengths by taxa'). \
+    subparsers.add_parser('taxa_average_graph', help='Display a bar graph of average protein lengths by taxa'). \
         set_defaults(func=plot_average_by_taxa)
 
     # Add argument to the main parser so that the help message can be displayed.
