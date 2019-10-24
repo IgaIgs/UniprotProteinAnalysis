@@ -1,4 +1,4 @@
-This project is a code modified by me from a practical tutorial, written by Phillip Lord of Newcastle University,
-therefore it is owned by both Newcastle University and me.
+This project is based on a practical tutorial written by Phillip Lord, Copyright, 2019, Newcastle University.
+I modified the code and added functionality to it therefore the copyright is shared now.
 
-Copyright, 2019, Newcastle University and Iga Koryciarz.
+Copyright, 2019, Newcastle University, Iga Koryciarz.

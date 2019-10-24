@@ -3,6 +3,7 @@ from uniplot import analysis
 from uniplot import parse, plot
 
 LOC = "uniprot_receptor.xml.gz"
+depth = 0
 
 
 def dump(args):
@@ -42,7 +43,9 @@ def plot_average_by_taxa(args):
     :param args: A reference to the 'taxa_average' sub-command defined in the subparsers below.
     :return: A bar graph with average protein sequence lengths organized by taxa.
     """
-    av = analysis.average_len_taxa(parse.uniprot_seqrecords(LOC))
+    # turning the depth variable to a dictionary to avoid the type error
+    dpth = vars(args)["depth"]
+    av = analysis.average_len_taxa(parse.uniprot_seqrecords(LOC), dpth)
     plot.plot_bar_show(av)
 
 
@@ -65,13 +68,16 @@ def cli():
         set_defaults(func=plot_average_by_taxa)
 
     # Add argument to the main parser so that the help message can be displayed.
-    parser.add_argument('--file_location', help="Input the location of the file after '--'")
+    parser.add_argument('--file_location', help='''Input the location of the file after '--file_location ',
+    but before the function you want to call.''', type=str)
+    parser.add_argument('-d', '--depth', help='''Input an integer for the number of taxa levels that you want the bar 
+    chart to display averages for. The "--depth=" has to be put before the "taxa_average_graph".''', type=int)
     # Add argument to the second parser to set a default file location.
     second_parser.add_argument('--file_location', default='uniprot_receptor.xml.gz')
 
     # Parse the command line
-    # Unknown to let the function accept new file_location and 'known' to use only arguments within the parser
-    args, unknown = parser.parse_known_args()
+    args = parser.parse_args()
 
     # Take the func argument, which points to our function and call it
     args.func(args)
+

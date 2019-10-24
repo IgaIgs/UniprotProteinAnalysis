@@ -17,15 +17,16 @@ def average_len(records):
     return statistics.mean(lengths)
 
 
-def average_len_taxa(records):
+def average_len_taxa(records, depth):
     """Calculate the average length of proteins' sequences for the top level taxa.
 
+    :param depth: The number of taxa that this function will calculate averages for.
     :param records: a list of proteins in a file.
     :return: an average length of protein sequences by taxa.
     """
     record_by_taxa = {}
     for r in records:
-        taxa = r.annotations["taxonomy"][0]
+        taxa = r.annotations["taxonomy"][depth]
         record_by_taxa.setdefault(taxa, []).append(r)
 
     return {taxa: average_len(record) for (taxa, record) in record_by_taxa.items()}
