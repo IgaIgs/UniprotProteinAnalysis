@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 def plot_bar_show(d):
     """Prepare a bar graph template.
 
-    :param d: Numeric data to be converted into the length of a bar.
+    :param d: Records in analysed file.
     :return: Show the bar graph.
     """
     # A list of numbers as long as the elements in d
@@ -19,4 +19,22 @@ def plot_bar_show(d):
     # Squash everything up so there is no white space
     plt.tight_layout()
     # Show the graph
+    plt.show()
+
+
+def plot_pie_show(d):
+    """Prepare a pie chart template.
+
+    :param d: Records in analysed file.
+    :return: A pie chart.
+    """
+    # A list of numbers as long as the elements in d
+    r = range(0, len(d))
+    # Prepare a figure
+
+    sizes = d.values()
+    fig, ax = plt.subplots()
+    ax.pie(sizes, labels=d.keys(), autopct='%1.1f%%', startangle=90, rotatelabels=270)
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
     plt.show()

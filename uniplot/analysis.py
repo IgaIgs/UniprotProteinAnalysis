@@ -31,4 +31,4 @@ def average_len_taxa(records, depth):
             taxa = r.annotations["taxonomy"][depth]
             record_by_taxa.setdefault(taxa, []).append(r)
 
-    return {taxa: average_len(record) for (taxa, record) in record_by_taxa.items()} 
+    return {taxa: average_len(record) for (taxa, record) in record_by_taxa.items()}
